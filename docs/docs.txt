@@ -1,0 +1,7 @@
+https://hacks.mozilla.org/2012/02/saving-images-and-files-in-localstorage/
+https://www.youtube.com/watch?v=8K2ihr3NC40
+
+PENDIENTE
+-----------
+
+ok-Control del formulario con js

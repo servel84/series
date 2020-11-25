@@ -1,0 +1,14 @@
+.nota {
+    text-align: center;
+    color: #FFFFFF;
+    letter-spacing: -1px;
+    width: 2em;
+    margin: 0 auto;
+    border-radius: .3em;
+    box-sizing: border-box;
+    border: 1px solid #007bff;
+    font-weight: normal;
+    font-size: 24px;
+    background: #007bff;
+    padding: .2em 0;
+    }
