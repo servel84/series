@@ -78,6 +78,9 @@ btnNuevaSerie.addEventListener('click', () => {
 // Botón añadir serie (dentro del modal)
 const anadirSerie = document.getElementById('anadirSerieBtn');
 /*--------------------------------------------------- Una vez editado, no se vuelve a comportar como añadir --------------------------*/
+/*--------------------------------------------------- Añado una línea de prueba para git ---------------------------------------------*/
+/*--------------------------------------------------- Añado una línea de prueba para git - rama javascript----------------------------*/
+
 anadirSerie.textContent = 'Añadir';
 
 
