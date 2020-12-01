@@ -67,23 +67,17 @@ const tituloAnadirSerie = document.querySelector('#tituloAnadirSerie');
 var editar = false;
 
 
-
-
 // Botón añadir serie
 const btnNuevaSerie = document.querySelector('#btnNuevaSerie');
 btnNuevaSerie.addEventListener('click', () => {
     tituloAnadirSerie.textContent = 'Añadir nueva serie';
+    anadirSerie.textContent = 'Añadir';
+    anadirSerie.setAttribute('id','anadirSerieBtn');
+    editar = false;
 });
 
 // Botón añadir serie (dentro del modal)
 const anadirSerie = document.getElementById('anadirSerieBtn');
-/*--------------------------------------------------- Una vez editado, no se vuelve a comportar como añadir --------------------------*/
-/*--------------------------------------------------- Añado una línea de prueba para git ---------------------------------------------*/
-/*--------------------------------------------------- Añado una línea de prueba para git - rama javascript----------------------------*/
-
-anadirSerie.textContent = 'Añadir';
-
-
 
 
 // Agregar serie en localstorage
@@ -245,7 +239,6 @@ function mostrarSeries() {
             const btnEditar = document.createElement('button');
             const btnEliminar = document.createElement('button');
             btnEditar.setAttribute('class','btnEditar btn btn-warning my-2 my-sm-0 mr-2');
-            //btnEditar.setAttribute('id','btnEditar');
             btnEliminar.setAttribute('class','btn btn-danger my-2 my-sm-0');
             btnEliminar.setAttribute('id','btnEliminar');
 
@@ -272,7 +265,6 @@ function mostrarSeries() {
             divListadoSeries.appendChild(rowSerie);
 
         });
-        //paraListadoSeries.innerHTML = 'Tienes series en tu listado';
     }
 }
 
@@ -300,7 +292,6 @@ function accionesSeries(){
             let nombreSerieActual = btnEditarPulsado.parentNode.parentNode.childNodes[1].textContent;
 
             let series = JSON.parse(localStorage.getItem('series'));
-            //let indice = 0;
 
             series.forEach(element => {
                 if(element.nombre == nombreSerieActual){
@@ -315,8 +306,6 @@ function accionesSeries(){
 
                     if (estadoSerie == 'Acabada'){
 
-                        //console.log('entro a acabada');
-
                         serieAcabada.checked = true;
                         serieAlDia.checked = false;
                         seriePendiente.checked = false;
@@ -325,8 +314,6 @@ function accionesSeries(){
                         seriePendiente.parentNode.setAttribute('class','btn btn-secondary mr-1');
 
                     } else if (estadoSerie == 'Al día') {
-
-                        //console.log('entro al día');
 
                         serieAcabada.checked = false;
                         serieAlDia.checked = true;
@@ -349,60 +336,67 @@ function accionesSeries(){
                 }
             }); 
             
+            /*------------------------------------- Al editar no controla bien los errores -----------------------------*/
+            
             // Editar serie 
             const editarSerie = document.querySelector('#editarSerieBtn');
 
             // Editar serie en localstorage
             editarSerie.addEventListener('click', (e) => {
 
-                console.log('entro en editar');
+                if (editar){
 
-                // No se envía el formulario
-                e.preventDefault();
+                    console.log('entro en editar');
 
-                // Validar formulario
-                if (comprobarForm()) {
+                    // No se envía el formulario
+                    e.preventDefault();
 
-                    // Comprobar el estado marcado de la serie
-                    if (serieAcabada.checked){
-                        estadoSerie = 'Acabada';
-                    } else if (serieAlDia.checked) {
-                        estadoSerie = 'Al día';
-                    } else if(seriePendiente.checked){
-                        estadoSerie = 'Pendiente';
-                    }
+                    // Validar formulario
+                    if (comprobarForm()) {
 
-                    let series = JSON.parse(localStorage.getItem('series'));
-
-                    series.forEach(element => {
-
-                        if (nombreSerieActual == element.nombre){
-                            element.nombre = nombreSerie.value;
-                            element.estado = estadoSerie;
-                            element.nota = notaSerie.value;
-                            element.temporadas = temporadasSerie.value;
-                            element.img =  portadaSerie.src;
-
+                        // Comprobar el estado marcado de la serie
+                        if (serieAcabada.checked){
+                            estadoSerie = 'Acabada';
+                        } else if (serieAlDia.checked) {
+                            estadoSerie = 'Al día';
+                        } else if(seriePendiente.checked){
+                            estadoSerie = 'Pendiente';
                         }
-                    });
 
-                    localStorage.setItem('series', JSON.stringify(series)); 
-                    mostrarSeries();
-                    accionesSeries();
+                        let series = JSON.parse(localStorage.getItem('series'));
 
-                    // Restaurar valores de los campos del formulario
-                    nombreSerie.value = '';
-                    serieAcabada.checked = false;
-                    serieAlDia.checked = false;
-                    seriePendiente.checked = false;
-                    estadoSerie = '';
-                    notaSerie.value = '';
-                    temporadasSerie.value = '';
-                    portadaSerie.setAttribute('src', '');
+                        series.forEach(element => {
 
-                    $("#anadirSerie").modal("hide");
+                            if (nombreSerieActual == element.nombre){
+                                element.nombre = nombreSerie.value;
+                                element.estado = estadoSerie;
+                                element.nota = notaSerie.value;
+                                element.temporadas = temporadasSerie.value;
+                                element.img =  portadaSerie.src;
+
+                            }
+                        });
+
+                        localStorage.setItem('series', JSON.stringify(series)); 
+                        mostrarSeries();
+                        accionesSeries();
+
+                        // Restaurar valores de los campos del formulario
+                        nombreSerie.value = '';
+                        serieAcabada.checked = false;
+                        serieAlDia.checked = false;
+                        seriePendiente.checked = false;
+                        estadoSerie = '';
+                        notaSerie.value = '';
+                        temporadasSerie.value = '';
+                        portadaSerie.setAttribute('src', '');
+
+                        $("#anadirSerie").modal("hide");
                    
-                }    
+                    } 
+
+                }
+   
 
             });
 
