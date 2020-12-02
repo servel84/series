@@ -51,6 +51,8 @@ $(document).on('click', '.btnEditar', function(e){
 
 /******************* JavaScript **************/
 
+
+
 // Definir const de botones y variables del formulario (modal)
 
 const nombreSerie = document.getElementById('nombreSerie');
@@ -344,6 +346,9 @@ function accionesSeries(){
             // Editar serie en localstorage
             editarSerie.addEventListener('click', (e) => {
 
+                let conflictoNombre = false;
+                let msgError = '';
+
                 if (editar){
 
                     console.log('entro en editar');
@@ -367,6 +372,20 @@ function accionesSeries(){
 
                         series.forEach(element => {
 
+                            // Comprobar si se está cambiando el nombre
+                            if (nombreSerieActual !== nombreSerie.value){
+
+                                // Comprobar que el nuevo nombre no esté ya creado para otra serie
+                                series.forEach(element2 => {
+                                    if (nombreSerie.value === element2.nombre){
+                                        conflictoNombre = true;
+                                        msgError = 'El nombre de la serie ya existe';
+                                        mensajeCtrlModal.innerHTML = msgError;
+                                    }
+                                });
+                                
+                            }
+
                             if (nombreSerieActual == element.nombre){
                                 element.nombre = nombreSerie.value;
                                 element.estado = estadoSerie;
@@ -377,21 +396,27 @@ function accionesSeries(){
                             }
                         });
 
-                        localStorage.setItem('series', JSON.stringify(series)); 
-                        mostrarSeries();
-                        accionesSeries();
+                        if (!conflictoNombre){
 
-                        // Restaurar valores de los campos del formulario
-                        nombreSerie.value = '';
-                        serieAcabada.checked = false;
-                        serieAlDia.checked = false;
-                        seriePendiente.checked = false;
-                        estadoSerie = '';
-                        notaSerie.value = '';
-                        temporadasSerie.value = '';
-                        portadaSerie.setAttribute('src', '');
+                            localStorage.setItem('series', JSON.stringify(series)); 
+                            mostrarSeries();
+                            accionesSeries();
 
-                        $("#anadirSerie").modal("hide");
+                            // Restaurar valores de los campos del formulario
+                            nombreSerie.value = '';
+                            serieAcabada.checked = false;
+                            serieAlDia.checked = false;
+                            seriePendiente.checked = false;
+                            estadoSerie = '';
+                            notaSerie.value = '';
+                            temporadasSerie.value = '';
+                            portadaSerie.setAttribute('src', '');
+                            msgError = '';
+
+
+                            $("#anadirSerie").modal("hide");
+
+                        }   
                    
                     } 
 
