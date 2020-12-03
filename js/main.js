@@ -61,6 +61,7 @@ const serieAlDia = document.getElementById('serieAlDia');
 const seriePendiente = document.getElementById('seriePendiente');
 const notaSerie = document.getElementById('notaSerie');
 const temporadasSerie = document.getElementById('temporadasSerie');
+const inputPortada = document.querySelector('#portadaSerie');
 const portadaSerie = document.querySelector('#imgPortadaSerie');
 var estadoSerie = '';
 
@@ -72,10 +73,28 @@ var editar = false;
 // Botón añadir serie
 const btnNuevaSerie = document.querySelector('#btnNuevaSerie');
 btnNuevaSerie.addEventListener('click', () => {
+
     tituloAnadirSerie.textContent = 'Añadir nueva serie';
     anadirSerie.textContent = 'Añadir';
     anadirSerie.setAttribute('id','anadirSerieBtn');
     editar = false;
+
+    // Restaurar valores de los campos del formulario
+    nombreSerie.value = '';
+    serieAcabada.checked = false;
+    serieAcabada.parentNode.setAttribute('class','btn btn-secondary mr-1');
+    serieAlDia.checked = false;
+    serieAlDia.parentNode.setAttribute('class','btn btn-secondary mr-1');
+    seriePendiente.checked = false;
+    seriePendiente.parentNode.setAttribute('class','btn btn-secondary mr-1');
+    estadoSerie = '';
+    notaSerie.value = '';
+    temporadasSerie.value = '';
+    inputPortada.setAttribute('type', 'text');
+    inputPortada.setAttribute('type', 'file');
+    portadaSerie.setAttribute('src', '');
+    mensajeCtrlModal.innerHTML = '';
+
 });
 
 // Botón añadir serie (dentro del modal)
@@ -86,8 +105,6 @@ const anadirSerie = document.getElementById('anadirSerieBtn');
 anadirSerie.addEventListener('click', (e) => {
 
     if (!editar){
-        
-        console.log('entro en añadir');
 
         // No se envía el formulario
         e.preventDefault();
@@ -139,16 +156,6 @@ anadirSerie.addEventListener('click', (e) => {
                 localStorage.setItem('series', JSON.stringify(series)); 
                 mostrarSeries();
                 accionesSeries();
-
-                // Restaurar valores de los campos del formulario
-                nombreSerie.value = '';
-                serieAcabada.checked = false;
-                serieAlDia.checked = false;
-                seriePendiente.checked = false;
-                estadoSerie = '';
-                notaSerie.value = '';
-                temporadasSerie.value = '';
-                portadaSerie.setAttribute('src', '');
 
                 $("#anadirSerie").modal("hide");
 
@@ -287,6 +294,20 @@ function accionesSeries(){
             anadirSerie.setAttribute('id','editarSerieBtn');
             editar = true;
 
+            // Restaurar valores de los campos del formulario
+            nombreSerie.value = '';
+            serieAcabada.checked = false;
+            serieAcabada.parentNode.setAttribute('class','btn btn-secondary mr-1');
+            serieAlDia.checked = false;
+            serieAlDia.parentNode.setAttribute('class','btn btn-secondary mr-1');
+            seriePendiente.checked = false;
+            seriePendiente.parentNode.setAttribute('class','btn btn-secondary mr-1');
+            estadoSerie = '';
+            notaSerie.value = '';
+            temporadasSerie.value = '';
+            portadaSerie.setAttribute('src', '');
+            mensajeCtrlModal.innerHTML = '';
+
             $('#anadirSerie').modal('show');
 
             let btnEditarPulsado = e.target;
@@ -401,17 +422,6 @@ function accionesSeries(){
                             localStorage.setItem('series', JSON.stringify(series)); 
                             mostrarSeries();
                             accionesSeries();
-
-                            // Restaurar valores de los campos del formulario
-                            nombreSerie.value = '';
-                            serieAcabada.checked = false;
-                            serieAlDia.checked = false;
-                            seriePendiente.checked = false;
-                            estadoSerie = '';
-                            notaSerie.value = '';
-                            temporadasSerie.value = '';
-                            portadaSerie.setAttribute('src', '');
-                            msgError = '';
 
 
                             $("#anadirSerie").modal("hide");
