@@ -6,4 +6,5 @@ PENDIENTE
 
 ok-Control del formulario con js
 
-modificación de prueba.Pull
+Si es "pendiente", agregar el último capítulo visto
+Agregar mensaje de confirmación al eliminar

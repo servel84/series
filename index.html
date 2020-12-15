@@ -38,7 +38,7 @@
                 <h1>Series vistas</h1>
 
                 <!-- Añadir serie -->
-                <button type="button" id="btnNuevaSerie" class="btn btn-primary mt-5" data-toggle="modal" data-target="#anadirSerie">
+                <button type="button" id="btnNuevaSerie" class="btn btn-primary mt-5" data-toggle="modal" data-target="#modalAnadirSerie">
                     Añadir Serie
                 </button>
                 <!-- Fin Añadir serie -->
@@ -63,12 +63,12 @@
         <!-- Fin Sección de series -->
     </main>
 
-    <!-- Modal Añadir/modificar Serie-->
-    <div class="modal fade" id="anadirSerie" tabindex="-1" aria-labelledby="anadirSerie" aria-hidden="true">
+    <!-- Modal Añadir Serie-->
+    <div class="modal fade" id="modalAnadirSerie" tabindex="-1" aria-labelledby="modalAnadirSerie" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="tituloAnadirSerie">Añadir nueva serie</h5>
+            <h5 class="modal-title">Añadir nueva serie</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -109,7 +109,6 @@
                         <label class="mt-3">Temporadas de la serie:</label>
                         <select class="form-control" name="temporadasSerie" id="temporadasSerie">
                             <option value=""></option>
-                            <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -136,6 +135,80 @@
         </div>
     </div>
     <!-- Fin Modal Añadir Serie -->
+
+    <!-- Modal Editar Serie-->
+    <div class="modal fade" id="modalEditarSerie" tabindex="-1" aria-labelledby="modalEditarSerie" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Editar serie</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+                <form action="" id="formEditarSerie">
+                    <div class="modal-body">
+                        <label>Nombre:</label>
+                        <input id="nombreSerieEditar" type="text" class="form-control">
+
+                        <div class="btn-group btn-group-toggle d-flex flex-row my-3" data-toggle="buttons">
+                            <label class="btn btn-secondary mr-1">
+                                <input type="radio" name="estadoSerieEditar" id="serieAcabadaEditar" value="serieAcabadaEditar" autocomplete="off"> Acabada
+                            </label>
+                            <label class="btn btn-secondary mr-1">
+                                <input type="radio" name="estadoSerieEditar" id="serieAlDiaEditar" value="serieAlDiaEditar" autocomplete="off"> Al día
+                            </label>
+                            <label class="btn btn-secondary mr-1">
+                                <input type="radio" name="estadoSerieEditar" id="seriePendienteEditar" value="seriePendienteEditar" autocomplete="off"> Pendiente
+                            </label>
+                        </div>
+
+                        <label>Nota:</label>
+                        <select class="form-control" name="notaSerieEditar" id="notaSerieEditar">
+                            <option value=""></option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+
+                        <label class="mt-3">Temporadas de la serie:</label>
+                        <select class="form-control" name="temporadasSerieEditar" id="temporadasSerieEditar">
+                            <option value=""></option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10 o más">10 o más</option>
+                        </select>
+
+                        <input type="file" id="portadaSerieEditar" class="mt-3">
+                        <img id="imgPortadaSerieEditar" src="" style="max-width: 200px; max-height: 200px;" class="mt-3">
+
+                        <div class="text-danger mt-3" id="mensajeCtrlModalEditar"></div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button id="editarSerieBtn" type="submit" class="btn btn-primary">Editar</button>
+                    </div>
+                </form>
+        </div>
+        </div>
+    </div>
+    <!-- Fin Modal Editar Serie -->
 
     <!-- Optional JavaScript; choose one of the two! -->
 
