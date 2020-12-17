@@ -4,7 +4,6 @@ https://www.youtube.com/watch?v=8K2ihr3NC40
 PENDIENTE
 -----------
 
-ok-Control del formulario con js
-
-Si es "pendiente", agregar el último capítulo visto
-Agregar mensaje de confirmación al eliminar
+ok - Control del formulario con js
+ok - Si es "pendiente o al día", agregar el último capítulo visto
+ok - Agregar mensaje de confirmación al eliminar

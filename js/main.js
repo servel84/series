@@ -81,6 +81,7 @@ const portadaSerieEditar = document.querySelector('#portadaSerieEditar');
 const imgPortadaSerieEditar = document.querySelector('#imgPortadaSerieEditar');
 
 var estadoSerie = '';
+var nombreSerieAEliminar = '';
 
 
 // Botón añadir serie
@@ -308,10 +309,12 @@ function mostrarSeries() {
             const colBtns = document.createElement('div');
             colBtns.setAttribute('class', 'col-sm-2');
             const btnEditarSerie = document.createElement('button');
-            const btnEliminar = document.createElement('button');
+            const btnEliminar = document.createElement('a');
             btnEditarSerie.setAttribute('class','btnEditarSerie btn btn-warning my-2 my-sm-0 mr-2');
             btnEliminar.setAttribute('class','btn btn-danger my-2 my-sm-0');
             btnEliminar.setAttribute('id','btnEliminar');
+            btnEliminar.setAttribute('data-toggle','modal');
+            btnEliminar.setAttribute('data-target','#modalEliminarSerie');
 
             
             colPortada.src = element.img;
@@ -526,7 +529,7 @@ function accionesSeries(){
     
     
 
-
+    /*
     // Eliminar serie
     const btnEliminar = document.querySelectorAll('#btnEliminar');
 
@@ -554,6 +557,47 @@ function accionesSeries(){
             accionesSeries();
 
         });
+    });
+    */
+
+    // Eliminar serie
+    const btnEliminar = document.querySelectorAll('#btnEliminar');
+
+    btnEliminar.forEach(element => {
+        element.addEventListener('click', function(e){
+            
+            let obj = e.target;
+            // Navegar hasta el nombre de la serie. Encontrar el índice de ese nombre en el array
+            nombreSerieAEliminar = obj.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML;
+            //console.log(nombreSerieAEliminar);
+            document.querySelector('#modalEliminarSerie .modal-body').innerHTML = '¿Deseas eliminar la serie "' + nombreSerieAEliminar + '"?';
+        });
+    });
+
+    // Eliminar serie (modal)
+    const eliminarSerieBtn = document.querySelector('#eliminarSerieBtn');
+
+    eliminarSerieBtn.addEventListener('click', ()=>{
+
+        console.log('eliminaré la serie ' + nombreSerieAEliminar);
+        let series = JSON.parse(localStorage.getItem('series'));
+        let indice = 0;
+
+        series.forEach(element => {
+            //console.log('elemento '+ element.nombre);
+            if (nombreSerieAEliminar === element.nombre){
+                //console.log(`la serie ${element.nombre} está en el índice ${indice}`);
+                series.splice(indice,1);
+            }
+        indice++;
+        })
+
+        // Guardar el objeto como un string, con las modifaciones (elemento eliminado)
+        localStorage.setItem('series', JSON.stringify(series)); 
+        mostrarSeries();
+        accionesSeries();
+        $("#modalEliminarSerie").modal("hide");
+
     });
 
 }
