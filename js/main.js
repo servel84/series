@@ -60,6 +60,9 @@ const nombreSerie = document.querySelector('#nombreSerie');
 const serieAcabada = document.querySelector('#serieAcabada');
 const serieAlDia = document.querySelector('#serieAlDia');
 const seriePendiente = document.querySelector('#seriePendiente');
+const capituloPendiente = document.querySelector('#capituloPendiente');
+const ultimaTemporadaVista = document.querySelector('#ultimaTemporadaVista');
+const ultimoCapituloVisto = document.querySelector('#ultimoCapituloVisto');
 const notaSerie = document.querySelector('#notaSerie');
 const temporadasSerie = document.querySelector('#temporadasSerie');
 const portadaSerie = document.querySelector('#portadaSerie');
@@ -70,14 +73,14 @@ const nombreSerieEditar = document.querySelector('#nombreSerieEditar');
 const serieAcabadaEditar = document.querySelector('#serieAcabadaEditar');
 const serieAlDiaEditar = document.querySelector('#serieAlDiaEditar');
 const seriePendienteEditar = document.querySelector('#seriePendienteEditar');
+const ultimaTemporadaVistaEditar = document.querySelector('#ultimaTemporadaVistaEditar');
+const ultimoCapituloVistoEditar = document.querySelector('#ultimoCapituloVistoEditar');
 const notaSerieEditar = document.querySelector('#notaSerieEditar');
 const temporadasSerieEditar = document.querySelector('#temporadasSerieEditar');
 const portadaSerieEditar = document.querySelector('#portadaSerieEditar');
 const imgPortadaSerieEditar = document.querySelector('#imgPortadaSerieEditar');
 
-
 var estadoSerie = '';
-//var editar = false;
 
 
 // Botón añadir serie
@@ -94,6 +97,9 @@ btnNuevaSerie.addEventListener('click', () => {
     serieAlDia.parentNode.setAttribute('class','btn btn-secondary mr-1');
     seriePendiente.checked = false;
     seriePendiente.parentNode.setAttribute('class','btn btn-secondary mr-1');
+    capituloPendiente.setAttribute('class','d-none');
+    ultimaTemporadaVista.value = '';
+    ultimoCapituloVisto.value = '';
     estadoSerie = '';
     notaSerie.value = '';
     temporadasSerie.value = '';
@@ -101,6 +107,17 @@ btnNuevaSerie.addEventListener('click', () => {
     portadaSerie.setAttribute('type', 'file');
     imgPortadaSerie.setAttribute('src', '');
     mensajeCtrlModal.innerHTML = '';
+
+    // Mostrar/Ocultar el div de último capítulo visto
+    serieAcabada.addEventListener('click',()=>{
+        capituloPendiente.setAttribute('class','d-none');
+    });
+    serieAlDia.addEventListener('click',()=>{
+        capituloPendiente.setAttribute('class','d-block');
+    });
+    seriePendiente.addEventListener('click',()=>{
+        capituloPendiente.setAttribute('class','d-block');
+    });
 
 });
 
@@ -150,6 +167,8 @@ anadirSerie.addEventListener('click', (e) => {
             let serieNueva = {
                 "nombre":nombreSerie.value,
                 "estado":estadoSerie,
+                "ultimaTemporadaVista":ultimaTemporadaVista.value,
+                "ultimoCapituloVisto":ultimoCapituloVisto.value,
                 "nota": notaSerie.value,
                 "temporadas": temporadasSerie.value,
                 "img": imgPortadaSerie.src
@@ -170,7 +189,6 @@ anadirSerie.addEventListener('click', (e) => {
         
     }    
       
-
 });
 
 
@@ -188,6 +206,10 @@ function comprobarForm(){
         return false;
     }else if (!serieAcabada.checked && !serieAlDia.checked && !seriePendiente.checked){
         msgError = 'Debes indicar el estado de la serie';
+        mensajeCtrlModal.innerHTML = msgError;
+        return false;
+    }else if ((!serieAcabada.checked && ultimaTemporadaVista.value == '') || (!serieAcabada.checked && ultimoCapituloVisto.value == '')){
+        msgError = 'Debes indicar el último capítulo visto';
         mensajeCtrlModal.innerHTML = msgError;
         return false;
     }else if(notaSerie.value == ''){
@@ -221,6 +243,10 @@ function comprobarFormEditar(){
     }else if (!serieAcabadaEditar.checked && !serieAlDiaEditar.checked && !seriePendienteEditar.checked){
         msgErrorEditar = 'Debes indicar el estado de la serie';
         mensajeCtrlModalEditar.innerHTML = msgErrorEditar;
+        return false;
+    }else if ((!serieAcabada.checked && ultimaTemporadaVistaEditar.value == '') || (!serieAcabada.checked && ultimoCapituloVistoEditar.value == '')){
+        msgError = 'Debes indicar el último capítulo visto';
+        mensajeCtrlModal.innerHTML = msgError;
         return false;
     }else if(notaSerieEditar.value == ''){
         msgErrorEditar = 'Debes asignar una nota a la serie';
@@ -292,7 +318,13 @@ function mostrarSeries() {
             colNombre.innerHTML = element.nombre;
             colTemporadas.innerHTML = element.temporadas + ' temporadas';
             nota.innerHTML = element.nota;
-            colEstado.innerHTML = element.estado;
+
+            if (element.estado != 'Acabada'){
+                colEstado.innerHTML = `${element.estado} (${element.ultimaTemporadaVista}x${element.ultimoCapituloVisto})` ;
+            }else{
+                colEstado.innerHTML = element.estado;
+            }
+
             btnEditarSerie.innerHTML = 'Editar';
             btnEliminar.innerHTML = 'Eliminar';
             
@@ -318,6 +350,7 @@ function mostrarSeries() {
 function accionesSeries(){
 
     // Editar serie (cargar datos en modal)
+
     //Una vez obtenido el nombre, recorrer el array y obtener los demás datos. Hay que hacerlo igualmente para obtener la imagen, y es más "seguro"
     const btnEditarSerie = document.querySelectorAll('.btnEditarSerie');
 
@@ -333,15 +366,30 @@ function accionesSeries(){
             serieAlDiaEditar.parentNode.setAttribute('class','btn btn-secondary mr-1');
             seriePendienteEditar.checked = false;
             seriePendienteEditar.parentNode.setAttribute('class','btn btn-secondary mr-1');
+            ultimaTemporadaVistaEditar.value = '';
+            ultimoCapituloVistoEditar.value = '';
             estadoSerie = '';
             notaSerieEditar.value = '';
             temporadasSerieEditar.value = '';
             imgPortadaSerieEditar.setAttribute('src', '');
             mensajeCtrlModalEditar.innerHTML = '';
 
+              // Mostrar/Ocultar el div de último capítulo visto
+            serieAcabadaEditar.addEventListener('click',()=>{
+                capituloPendienteEditar.setAttribute('class','d-none');
+            });
+            serieAlDiaEditar.addEventListener('click',()=>{
+                capituloPendienteEditar.setAttribute('class','d-block');
+            });
+            seriePendienteEditar.addEventListener('click',()=>{
+                capituloPendienteEditar.setAttribute('class','d-block');
+            });
+
+
             $('#modalEditarSerie').modal('show');
 
             let btnEditarPulsado = e.target;
+            
             // Navegar hasta el nombre de la serie. Encontrar el índice de ese nombre en el array
             let nombreSerieActual = btnEditarPulsado.parentNode.parentNode.childNodes[1].textContent;
 
@@ -354,6 +402,8 @@ function accionesSeries(){
                     temporadasSerieEditar.value = element.temporadas;
                     estadoSerieEditar = element.estado;
                     notaSerieEditar.value = element.nota;
+                    ultimaTemporadaVistaEditar.value = element.ultimaTemporadaVista;
+                    ultimoCapituloVistoEditar.value = element.ultimoCapituloVisto;
                     //$('#anadirSerie').modal('show');
                     //nombreSerie.setAttribute('readonly',true);
 
@@ -365,6 +415,8 @@ function accionesSeries(){
                         serieAcabadaEditar.parentNode.setAttribute('class','btn btn-secondary mr-1 active');
                         serieAlDiaEditar.parentNode.setAttribute('class','btn btn-secondary mr-1');
                         seriePendienteEditar.parentNode.setAttribute('class','btn btn-secondary mr-1');
+                        capituloPendienteEditar.setAttribute('class','d-none');
+
 
                     } else if (estadoSerieEditar == 'Al día') {
 
@@ -374,6 +426,8 @@ function accionesSeries(){
                         serieAcabadaEditar.parentNode.setAttribute('class','btn btn-secondary mr-1');
                         serieAlDiaEditar.parentNode.setAttribute('class','btn btn-secondary mr-1 active');
                         seriePendienteEditar.parentNode.setAttribute('class','btn btn-secondary mr-1');
+                        capituloPendienteEditar.setAttribute('class','d-block');
+                        
 
                     } else if(estadoSerieEditar == 'Pendiente'){
 
@@ -383,6 +437,7 @@ function accionesSeries(){
                         serieAcabadaEditar.parentNode.setAttribute('class','btn btn-secondary mr-1');
                         serieAlDiaEditar.parentNode.setAttribute('class','btn btn-secondary mr-1');
                         seriePendienteEditar.parentNode.setAttribute('class','btn btn-secondary mr-1 active');
+                        capituloPendienteEditar.setAttribute('class','d-block');
 
                     }
 
@@ -436,11 +491,15 @@ function accionesSeries(){
                     series.forEach(element => {
 
                         if (nombreSerieActual == element.nombre){
+
+                            // Asignar nuevos valores
                             element.nombre = nombreSerieEditar.value;
                             element.estado = estadoSerieEditar;
                             element.nota = notaSerieEditar.value;
                             element.temporadas = temporadasSerieEditar.value;
                             element.img =  imgPortadaSerieEditar.src;
+                            element.ultimaTemporadaVista = ultimaTemporadaVistaEditar.value;
+                            element.ultimoCapituloVisto = ultimoCapituloVistoEditar.value;
 
                         }
                     });
